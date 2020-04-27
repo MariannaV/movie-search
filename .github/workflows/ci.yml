@@ -1,0 +1,40 @@
+name: CI
+on: [pull_request]
+
+jobs:
+  linters:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Installing Dependencies
+        run: yarn
+
+      - name: Formatting
+        id: format
+        continue-on-error: true
+        run: yarn format:check && echo ::set-output name=status::success
+
+      - name: Lintings
+        id: lint
+        continue-on-error: true
+        run: yarn lint:check && echo ::set-output name=status::success
+
+      - name: Check on failures
+        if: steps.lint.outputs.status != 'success' || steps.format.outputs.status != 'success'
+        run: echo ${{ toJson(steps) }} && exit 1
+
+  deploy:
+    needs: [linters]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Installing Dependencies
+        run: yarn
+
+      - name: Building application
+        run: yarn build
+
+      - name: Deploying application
+        run: npx netlify-cli deploy --dir=public -s ${{ secrets.NETLIFY_SITE_ID }} --auth ${{ secrets.NETLIFY_ACCESS_TOKEN }}
