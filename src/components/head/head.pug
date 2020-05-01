@@ -1,0 +1,15 @@
+mixin head(data)
+  head
+    title= data.title
+    meta(charset="utf-8")
+    meta(content=data.description name="description")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    meta(name="HandheldFriendly" content="true")
+    meta(name="format-detection", content="telephone=no")
+    meta(content="IE=edge" http-equiv="X-UA-Compatible")
+    meta(name="theme-color", content="#ffffff")
+    link(href="https://fonts.googleapis.com/css?family=Roboto:300,400,700" rel="stylesheet")
+    link(rel="stylesheet" href="libs/glide/dist/css/glide.core.min.css")
+    link(rel="stylesheet" href="libs/glide/dist/css/glide.theme.min.css")
+
+    block

@@ -1,0 +1,66 @@
+@import 'helpers/postcss-reset/mobile.css';
+@import '../components/header/index.scss';
+@import '../components/variables.scss';
+
+/*----------BASIC----------*/
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  font-family: 'Roboto';
+  font-weight: 700;
+  font-size: 20px;
+  line-height: 28px;
+}
+
+main {
+  width: 80%;
+  flex-grow: 1;
+  margin: 0 auto;
+}
+
+/*----------CONTENT PAGES----------*/
+.section-with-slider {
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.movies-slider {
+  .arrow-left, .arrow-right {
+    background-color: red;
+  }
+
+}
+
+
+/*----------CARDS----------*/
+.card-item {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid;
+  border-radius: 3px;
+}
+
+
+/*----------FOOTER----------*/
+footer {
+  min-height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: $colorBlueDark;
+
+  a {
+    color: $colorWhite;
+  }
+}
+
+.footer-container {
+  width: 80%;
+  display: flex;
+  justify-content: space-between;
+  @media (max-width: 374px) {
+    flex-direction: column;
+    text-align: center;
+  }
+}
