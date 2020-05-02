@@ -34,11 +34,14 @@
     "extends": "./configs/babelrc.js"
   },
   "dependencies": {
-    "glide": "npm:@glidejs/glide"
+    "swiper": "5.3.8"
   },
   "devDependencies": {
     "@babel/core": "7.9.0",
     "@babel/preset-env": "7.9.5",
+    "@babel/register": "7.9.0",
+    "core-js": "3.6.5",
+    "esm": "3.2.25",
     "autoprefixer": "9.7.6",
     "browser-sync": "2.26.7",
     "css-mqpacker": "7.0.0",
@@ -56,6 +59,7 @@
     "gulp-rename": "2.0.0",
     "gulp-sourcemaps": "2.6.5",
     "gulp-uglify-es": "2.0.0",
+    "gulp-env": "0.4.0",
     "postcss-advanced-variables": "3.0.1",
     "postcss-aspect-ratio": "1.0.2",
     "postcss-assets": "5.0.0",

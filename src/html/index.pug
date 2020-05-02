@@ -5,47 +5,24 @@ doctype html
 html(lang="ru")
     +head({ "title": "Movie Search", "description": "Поиск кино" })
         link(rel="stylesheet" href="styles/index.css")
+        link(rel="stylesheet" href="/libs/swiper/css/swiper.min.css")
     body.page-home
             +header()
             main(id='contentContainer')
-                form.search-form
-                    input(type='text' placeholder='Search movie' autocomplete="off")
-                    button.search-button Search
+                form(id="searchMovie").search-form
+                    input(type='text' placeholder='Search movie' autocomplete="off").search-input
+                    button(type='submit').search-button Search
+                    button(type='reset').delete-button X
                     .results No results
-                section.section-with-slider
-                    .glide.movies-slider
-                        .glide__track(data-glide-el="track")
-                            ul.glide__slides
-                                li.glide__slide.card-item 1 slide
-                                    .card-title Requiem for a dream
-                                    .card-img IMG
-                                    .card-bottom
-                                li.glide__slide.card-item 2 slide
-                                    .card-title Requiem for a dream
-                                    .card-img IMG
-                                    .card-bottom
-                                li.glide__slide.card-item 3 slide
-                                    .card-title Requiem for a dream
-                                    .card-img IMG
-                                    .card-bottom
-                        .glide__arrows(data-glide-el="controls")
-                            button.glide__arrow.glide__arrow--left.arrow-left(data-glide-dir="<") prev
-                            button.glide__arrow.glide__arrow--right.arrow-right(data-glide-dir=">") next
+                .section-with-slider.swiper-container#movieSlider
+                    .swiper-button-prev
+                    .swiper-button-next
+                    .swiper-wrapper
+                    .swiper-pagination
 
             footer
                 .footer-container
                     a(href="https://rs.school/") RS School 2020q1
                     a(href="#") MariannaV
 
-
-    script(type='module' src='/js/components/slider.js' defer)
-    script(type='module' src='/js/components/API.js' defer)
-
-
-
-
-
-
-
-
-
+    script(type='module' src='/js/pages/common.js' defer)
