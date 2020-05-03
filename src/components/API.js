@@ -5,7 +5,6 @@ export const API_OMDB = {
   pageSize: 10,
   searchResults: new Map([]),
   movies: new Map([]),
-  moviesRaiting: new Map([]),
   //TODO: get search url params api mdn
   async moviesGetBySearch(params = {}) {
     const { text, year, page } = params;
@@ -19,6 +18,7 @@ export const API_OMDB = {
         this.movies.set(movie.imdbID, movie);
         movieIds.add(movie.imdbID);
       });
+      await Promise.all([...movieIds].map((movieId) => this.moviesRaitingGetById({ movieId })));
       if (!this.searchResults.has(text)) {
         this.searchResults.set(text, new Set());
       }
@@ -37,9 +37,30 @@ export const API_OMDB = {
       if (!response.ok) throw Error('NO OK');
       const result = await response.json();
       if ('Error' in result) throw Error(result.Error);
-      this.moviesRaiting.set(movieId, result.imdbRating);
+      this.movies.set(movieId, { ...this.movies.get(movieId), imdbRaiting: result.imdbRating });
     } catch (error) {
       window.alert(error);
+    }
+  },
+};
+
+export const API_TRANSLATE = {
+  get apikey() {
+    return 'trnsl.1.1.20200429T181625Z.70c449acda86ca78.acb0fcbb0be0df748458456d59c0c6e4e08624e4';
+  },
+  async translateTo(param = {}) {
+    const { word, lang } = param;
+    try {
+      const response = await fetch(
+        `https://translate.yandex.net/api/v1.5/tr.json/translate?key=${this.apikey}&text=${word}&lang=${lang}`
+      );
+      if (!response.ok) throw Error('NO OK');
+      const result = await response.json();
+      // because we always get array with one value as answer for our text
+      return result.text[0];
+    } catch (error) {
+      window.alert(error);
+      return word;
     }
   },
 };

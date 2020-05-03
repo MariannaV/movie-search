@@ -1,5 +1,5 @@
 import Swiper from '/libs/swiper/js/swiper.esm.browser.bundle.js';
-import { API_OMDB } from './API.js';
+import { API_OMDB, API_TRANSLATE } from './API.js';
 
 export const movieSlider = sliderCreate({ sliderName: 'movieSlider' });
 
@@ -38,7 +38,8 @@ function sliderCreate({ sliderName }) {
     },
     async slidesCreate() {
       if (!history.state) history.replaceState({ searchMovie: 'House', page: 1 }, 'movies');
-      const { page, searchMovie } = history.state;
+      const { page } = history.state;
+      const searchMovie = await API_TRANSLATE.translateTo({ word: history.state.searchMovie, lang: 'en' });
       const getSearchResultsByCurrentSearchMovie = () => API_OMDB.searchResults.get(searchMovie);
 
       if (
@@ -64,15 +65,18 @@ function sliderCreate({ sliderName }) {
         'beforeend',
         `
                <div class='card-title'>
+                <a target="_blank" href="https://www.imdb.com/title/${moviesData.imdbID}/">
                    <p>${moviesData.Title}</p>
+                   </a>
                </div>
                <div class='card-img'>
                     <img src=${moviesData.Poster}>
                 </div>
                <div class='card-bottom'>
                     <div class='year'>${moviesData.Year}</div>
-                    <div class='raiting'>${moviesData.moviesRaitingData}</div>
+                    <div class='raiting'>${moviesData.imdbRaiting}</div>
                 </div>
+                
          `
       );
       return slide;
