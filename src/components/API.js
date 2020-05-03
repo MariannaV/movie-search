@@ -8,12 +8,16 @@ export const API_OMDB = {
   //TODO: get search url params api mdn
   async moviesGetBySearch(params = {}) {
     const { text, year, page } = params;
-    //check all required params
     try {
       const response = await fetch(`http://www.omdbapi.com/?apikey=${this.apikey}&s=${text}&page=${page}&y=${year}`);
       if (!response.ok) throw Error('NO OK');
       const result = await response.json();
       const movieIds = new Set();
+      if (result.Response === 'False') {
+        document.querySelector('#searchMovie .results').insertAdjacentHTML('afterbegin', `No results for ${text}`);
+
+        return;
+      }
       result.Search.forEach((movie) => {
         this.movies.set(movie.imdbID, movie);
         movieIds.add(movie.imdbID);

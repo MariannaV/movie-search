@@ -1,6 +1,6 @@
 import Swiper from '/libs/swiper/js/swiper.esm.browser.bundle.js';
 import { API_OMDB, API_TRANSLATE } from './API.js';
-
+import { addSearchResults } from '../pages/common.js';
 export const movieSlider = sliderCreate({ sliderName: 'movieSlider' });
 
 function sliderCreate({ sliderName }) {
@@ -9,10 +9,10 @@ function sliderCreate({ sliderName }) {
     init() {
       this[sliderId] = new Swiper(`#${sliderName}`, {
         speed: 400,
-        slidesPerView: 4,
-        centeredSlides: true,
+        slidesPerView: 3,
+        // centeredSlides: true,
         dynamicBullets: true,
-        spaceBetween: 0,
+        spaceBetween: 10,
         pagination: {
           el: '.swiper-pagination',
           clickable: true,
@@ -41,7 +41,6 @@ function sliderCreate({ sliderName }) {
       const { page } = history.state;
       const searchMovie = await API_TRANSLATE.translateTo({ word: history.state.searchMovie, lang: 'en' });
       const getSearchResultsByCurrentSearchMovie = () => API_OMDB.searchResults.get(searchMovie);
-
       if (
         !getSearchResultsByCurrentSearchMovie() ||
         getSearchResultsByCurrentSearchMovie().size <= (page - 1) * API_OMDB.pageSize
@@ -50,10 +49,18 @@ function sliderCreate({ sliderName }) {
           text: searchMovie,
           page,
         });
+
+        if (!getSearchResultsByCurrentSearchMovie()) {
+          addSearchResults(`No results for ${searchMovie}`);
+          this.slidesCreate();
+          return;
+        }
       }
       const searchMovieIds = [...getSearchResultsByCurrentSearchMovie()];
-      const searchMovies = searchMovieIds.map((movieId) => API_OMDB.movies.get(movieId));
 
+      const searchMovies = searchMovieIds.map((movieId) => API_OMDB.movies.get(movieId));
+      console.log(searchMovies);
+      addSearchResults(`Results for ${searchMovie}`);
       this.slider.appendSlide(
         searchMovies.slice((history.state.page - 1) * API_OMDB.pageSize).map((movieData) => this.slideCreate(movieData))
       );
@@ -70,11 +77,11 @@ function sliderCreate({ sliderName }) {
                    </a>
                </div>
                <div class='card-img'>
-                    <img src=${moviesData.Poster}>
+                    <img src=${moviesData.Poster !== 'N/A' ? moviesData.Poster : '/assets/no-available-photo.svg'}>
                 </div>
                <div class='card-bottom'>
                     <div class='year'>${moviesData.Year}</div>
-                    <div class='raiting'>${moviesData.imdbRaiting}</div>
+                    ${moviesData.imdbRaiting !== 'N/A' ? `<div class='raiting'>${moviesData.imdbRaiting}</div>` : ''}
                 </div>
                 
          `

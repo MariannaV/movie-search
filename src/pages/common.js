@@ -23,10 +23,16 @@ function listenSearchForm() {
 
   deleteButton.addEventListener('click', () => {
     searchInput.value = null;
+    document.querySelector('#searchMovie .results').innerHTML = '';
   });
 }
 
 function navigateTo({ searchMovie, page = 0 }) {
   history.pushState(searchMovie ? { searchMovie, page } : null, 'movies');
   movieSlider.recreate();
+}
+export function addSearchResults(message) {
+  const resultsBlock = document.querySelector('#searchMovie .results');
+  resultsBlock.innerHTML = '';
+  resultsBlock.insertAdjacentHTML('afterbegin', `${message}`);
 }
