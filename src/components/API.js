@@ -53,6 +53,7 @@ export const API_TRANSLATE = {
     return 'trnsl.1.1.20200429T181625Z.70c449acda86ca78.acb0fcbb0be0df748458456d59c0c6e4e08624e4';
   },
   async translateTo(param = {}) {
+    document.querySelector('.lds-spinner').classList.add('loading');
     const { word, lang } = param;
     try {
       const response = await fetch(
@@ -61,8 +62,10 @@ export const API_TRANSLATE = {
       if (!response.ok) throw Error('NO OK');
       const result = await response.json();
       // because we always get array with one value as answer for our text
+
       return result.text[0];
     } catch (error) {
+      loader.classList.remove('loading');
       window.alert(error);
       return word;
     }

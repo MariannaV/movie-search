@@ -9,13 +9,27 @@ function sliderCreate({ sliderName }) {
     init() {
       this[sliderId] = new Swiper(`#${sliderName}`, {
         speed: 400,
-        slidesPerView: 3,
+        breakpoints: {
+          0: {
+            slidesPerView: 1,
+            centeredSlides: true,
+          },
+          800: {
+            slidesPerView: 2,
+          },
+          900: {
+            slidesPerView: 3,
+          },
+        },
         // centeredSlides: true,
-        dynamicBullets: true,
+        centeredSlidesBounds: true,
+        // dynamicBullets: true,
         spaceBetween: 10,
         pagination: {
           el: '.swiper-pagination',
           clickable: true,
+          dynamicBullets: true,
+          dynamicMainBullets: 3,
         },
         navigation: {
           nextEl: '.swiper-button-next',
@@ -49,8 +63,19 @@ function sliderCreate({ sliderName }) {
           text: searchMovie,
           page,
         });
+        const isNotFound = !getSearchResultsByCurrentSearchMovie();
+        const isTranslated = history.state.searchMovie !== searchMovie;
 
-        if (!getSearchResultsByCurrentSearchMovie()) {
+        addSearchResults(
+          (() => {
+            if (isNotFound) return `No results for ${history.state.searchMovie}`;
+            if (isTranslated) return `Results for ${searchMovie}`;
+            return null;
+          })()
+        );
+
+        if (isNotFound) {
+          history.replaceState(null, 'movies');
           addSearchResults(`No results for ${searchMovie}`);
           this.slidesCreate();
           return;
@@ -59,8 +84,7 @@ function sliderCreate({ sliderName }) {
       const searchMovieIds = [...getSearchResultsByCurrentSearchMovie()];
 
       const searchMovies = searchMovieIds.map((movieId) => API_OMDB.movies.get(movieId));
-      console.log(searchMovies);
-      addSearchResults(`Results for ${searchMovie}`);
+      document.querySelector('.lds-spinner').classList.remove('loading');
       this.slider.appendSlide(
         searchMovies.slice((history.state.page - 1) * API_OMDB.pageSize).map((movieData) => this.slideCreate(movieData))
       );
