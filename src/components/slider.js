@@ -101,7 +101,9 @@ function sliderCreate({ sliderName }) {
                    </a>
                </div>
                <div class='card-img'>
-                    <img src=${moviesData.Poster !== 'N/A' ? moviesData.Poster : '/assets/no-available-photo.svg'}>
+                    <img src=${
+                      moviesData.Poster !== 'N/A' ? moviesData.PosterBase64 : '/assets/no-available-photo.svg'
+                    }>
                 </div>
                <div class='card-bottom'>
                     <div class='year'>${moviesData.Year}</div>

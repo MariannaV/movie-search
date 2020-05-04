@@ -22,7 +22,21 @@ export const API_OMDB = {
         this.movies.set(movie.imdbID, movie);
         movieIds.add(movie.imdbID);
       });
-      await Promise.all([...movieIds].map((movieId) => this.moviesRaitingGetById({ movieId })));
+      await Promise.all(
+        [...movieIds]
+          .map((movieId) => [
+            this.moviesRaitingGetById({ movieId }),
+            fetch(this.movies.get(movieId).Poster).then((image) =>
+              imageToBase64({
+                image,
+                onload: (PosterBase64) => {
+                  this.movies.set(movieId, { ...this.movies.get(movieId), PosterBase64 });
+                },
+              })
+            ),
+          ])
+          .flat()
+      );
       if (!this.searchResults.has(text)) {
         this.searchResults.set(text, new Set());
       }
@@ -71,3 +85,15 @@ export const API_TRANSLATE = {
     }
   },
 };
+
+async function imageToBase64({ image, onload }) {
+  const blob = await image.blob();
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = function () {
+      onload(this.result);
+      resolve();
+    };
+    reader.readAsDataURL(blob);
+  });
+}
