@@ -1,0 +1,124 @@
+:root {
+  --swiper-theme-color: $colorWhite !important;
+}
+
+.card-item {
+  font-weight: 700;
+  display: flex;
+  flex-direction: column;
+  border-radius: 3px;
+  border: 1px solid $colorWhiteTransparent3;
+  padding: 20px;
+  background-color: $colorGrayLightTransparent4;
+  @media (max-width: $tablet-small) {
+    display: flex;
+    align-items: center;
+  }
+  &.swiper-slide {
+    height: 480px;
+  }
+  .card-title {
+    height: 60px;
+    text-align: center;
+    p {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      overflow: hidden;
+    }
+  }
+  .card-title,
+  .card-img,
+  .year {
+    margin-bottom: 15px;
+  }
+  .card-title,
+  .card-bottom {
+    color: #aec4d8;
+  }
+  .card-bottom {
+    display: flex;
+    justify-content: space-between;
+    margin-top: auto;
+    @media (max-width: $tablet-small) {
+      align-self: normal;
+    }
+  }
+  .card-img {
+    margin-top: auto;
+    text-align: center;
+    max-width: 100%;
+    max-height: 100%;
+    @media (max-width: 349px) {
+      max-width: 200px;
+    }
+    @media (min-width: 350px) and (max-width: $tablet-small) {
+      max-width: 250px;
+    }
+    img {
+      width: 100%;
+    }
+  }
+  .raiting {
+    width: 65px;
+    background-image: url('../../img/icons/star-icon.svg');
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position-x: 40px;
+    background-position-y: 2px;
+  }
+}
+
+.swiper-navigation-buttons {
+  .swiper-button-prev,
+  .swiper-button-next {
+    outline: none;
+    transition: opacity 0.3s;
+    @media (max-width: 549px) {
+      width: 32px;
+      height: 32px;
+      top: -35px;
+      border-radius: 50%;
+      background-color: rgba(163, 176, 187, 0.75);
+      box-shadow: 0 0 5px rgba(219, 219, 219, 0.82);
+    }
+
+    &::after {
+      @media (max-width: 549px) {
+        font-size: 16px;
+      }
+    }
+    &.swiper-button-disabled {
+      @media (max-width: 549px) {
+        opacity: 0.5;
+      }
+    }
+  }
+  .swiper-button-prev {
+    @media (min-width: $tablet-small) and (max-width: 767px) {
+      left: -35px;
+    }
+    @media (min-width: 768px) {
+      left: -50px;
+    }
+  }
+  .swiper-button-next {
+    @media (min-width: $tablet-small) and (max-width: 767px) {
+      right: -35px;
+    }
+    @media (min-width: 768px) {
+      right: -50px;
+    }
+  }
+}
+
+.pagination-block {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
+  .swiper-pagination-bullet {
+    background-color: $colorWhite;
+    opacity: 0.7;
+  }
+}
