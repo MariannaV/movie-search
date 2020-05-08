@@ -1,3 +1,5 @@
+import { showErrorMessage } from '../pages/common.js';
+
 export const API_OMDB = {
   get apikey() {
     return '50c65d0c'; //process.env.OMDB_key
@@ -10,14 +12,12 @@ export const API_OMDB = {
     const { text, year, page } = params;
     try {
       const response = await fetch(`http://www.omdbapi.com/?apikey=${this.apikey}&s=${text}&page=${page}&y=${year}`);
-      if (!response.ok) throw Error('NO OK');
+      if (!response.ok) {
+        throw Error('NO OK');
+      }
       const result = await response.json();
       const movieIds = new Set();
-      if (result.Response === 'False') {
-        document.querySelector('#searchMovie .results').insertAdjacentHTML('afterbegin', `No results for ${text}`);
-
-        return;
-      }
+      if (result.Response === 'False') return;
       result.Search.forEach((movie) => {
         this.movies.set(movie.imdbID, movie);
         movieIds.add(movie.imdbID);
@@ -37,27 +37,35 @@ export const API_OMDB = {
           ])
           .flat()
       );
+
       if (!this.searchResults.has(text)) {
         this.searchResults.set(text, new Set());
       }
       movieIds.forEach((movieId) => {
         this.searchResults.get(text).add(movieId);
       });
-      if ('Error' in result) throw Error(result.Error);
+
+      if ('Error' in result) {
+        throw Error(result.Error);
+      }
     } catch (error) {
-      window.alert(error);
+      showErrorMessage(error);
     }
   },
   async moviesRaitingGetById(params = {}) {
     const { movieId } = params;
     try {
       const response = await fetch(`https://www.omdbapi.com/?i=${movieId}&apikey=${this.apikey}`);
-      if (!response.ok) throw Error('NO OK');
+      if (!response.ok) {
+        throw Error('NO OK');
+      }
       const result = await response.json();
-      if ('Error' in result) throw Error(result.Error);
+      if ('Error' in result) {
+        throw Error(result.Error);
+      }
       this.movies.set(movieId, { ...this.movies.get(movieId), imdbRaiting: result.imdbRating });
     } catch (error) {
-      window.alert(error);
+      showErrorMessage(error);
     }
   },
 };
@@ -67,7 +75,7 @@ export const API_TRANSLATE = {
     return 'trnsl.1.1.20200429T181625Z.70c449acda86ca78.acb0fcbb0be0df748458456d59c0c6e4e08624e4';
   },
   async translateTo(param = {}) {
-    document.querySelector('.lds-spinner').classList.add('loading');
+    document.querySelector('.loader-wrapper').classList.add('loading');
     const { word, lang } = param;
     try {
       const response = await fetch(
@@ -79,8 +87,7 @@ export const API_TRANSLATE = {
 
       return result.text[0];
     } catch (error) {
-      loader.classList.remove('loading');
-      window.alert(error);
+      showErrorMessage(error);
       return word;
     }
   },

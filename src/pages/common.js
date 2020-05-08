@@ -16,14 +16,13 @@ function listenSearchForm() {
   const deleteButton = searchForm.querySelector('.delete-button');
   const searchInput = searchForm.querySelector('.search-input');
 
-  searchButton.addEventListener('click', (button) => {
+  searchForm.addEventListener('submit', (button) => {
     button.preventDefault();
     navigateTo({ searchMovie: searchInput.value.trim() });
   });
 
   deleteButton.addEventListener('click', () => {
     searchInput.value = null;
-    document.querySelector('#searchMovie .results').innerHTML = '';
   });
 }
 
@@ -34,5 +33,20 @@ function navigateTo({ searchMovie, page = 0 }) {
 export function addSearchResults(message) {
   const resultsBlock = document.querySelector('#searchMovie .results');
   resultsBlock.innerHTML = '';
-  resultsBlock.insertAdjacentHTML('afterbegin', `${message}`);
+  if (message) resultsBlock.insertAdjacentHTML('afterbegin', `${message}`);
+}
+
+export function showErrorMessage(message) {
+  const errorMessageContainer = document.querySelector('.errors-block');
+  const errorBlock = errorMessageContainer.querySelector('.popup-text');
+  const closePopup = errorMessageContainer.querySelector('.close-popup');
+  document.body.addEventListener('keydown', (e) => {
+    if (e.keyCode === 27) {
+      errorMessageContainer.classList.remove('active');
+    }
+  });
+  closePopup.addEventListener('click', () => errorMessageContainer.classList.remove('active'));
+  errorMessageContainer.classList.add('active');
+  errorBlock.innerHTML = '';
+  errorBlock.insertAdjacentHTML('afterbegin', message);
 }
