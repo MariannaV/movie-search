@@ -12,7 +12,6 @@ window.onpopstate = () => {
 
 function listenSearchForm() {
   const searchForm = document.getElementById('searchMovie');
-  const searchButton = searchForm.querySelector('.search-button');
   const deleteButton = searchForm.querySelector('.delete-button');
   const searchInput = searchForm.querySelector('.search-input');
 
@@ -31,7 +30,7 @@ function navigateTo({ searchMovie, page = 0 }) {
   movieSlider.recreate();
 }
 export function addSearchResults(message) {
-  const resultsBlock = document.querySelector('#searchMovie .results');
+  const resultsBlock = document.querySelector('.results');
   resultsBlock.innerHTML = '';
   if (message) resultsBlock.insertAdjacentHTML('afterbegin', `${message}`);
 }
@@ -40,12 +39,20 @@ export function showErrorMessage(message) {
   const errorMessageContainer = document.querySelector('.errors-block');
   const errorBlock = errorMessageContainer.querySelector('.popup-text');
   const closePopup = errorMessageContainer.querySelector('.close-popup');
-  document.body.addEventListener('keydown', (e) => {
-    if (e.keyCode === 27) {
+  function onKeyDownClose(event) {
+    if (event.keyCode === 27) {
       errorMessageContainer.classList.remove('active');
+      closePopup.removeEventListener('click', onClosePopup);
+      document.body.removeEventListener('keydown', onKeyDownClose);
     }
-  });
-  closePopup.addEventListener('click', () => errorMessageContainer.classList.remove('active'));
+  }
+  function onClosePopup() {
+    errorMessageContainer.classList.remove('active');
+    closePopup.removeEventListener('click', onClosePopup);
+    document.body.removeEventListener('keydown', onKeyDownClose);
+  }
+  document.body.addEventListener('keydown', onKeyDownClose);
+  closePopup.addEventListener('click', onClosePopup);
   errorMessageContainer.classList.add('active');
   errorBlock.innerHTML = '';
   errorBlock.insertAdjacentHTML('afterbegin', message);
