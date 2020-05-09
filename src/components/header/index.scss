@@ -3,9 +3,19 @@
 
 header {
   display: flex;
+  font-size: $fontSize;
   justify-content: center;
-  padding: 20px;
+  padding: 15px 0;
   color: $colorWhite;
-  background-color: $colorBlueDark;
+  background: $colorBlueTransparent6;
+  background: $linearGradientBlue;
+  border-radius: 3px;
+  @media (min-width: $tablet-small) {
+    font-size: $fontSizeSmall;
+  }
 
+  @media (min-width: $desktop-big) {
+    padding: 1vw 0;
+    font-size: $fontSizeBig;
+  }
 }

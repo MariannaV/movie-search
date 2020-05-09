@@ -1,5 +1,10 @@
 include ../components/head/head
 include ../components/header/header.pug
+include ../components/form/search-form.pug
+include ../components/loader/index.pug
+include ../components/slider/index.pug
+include ../components/popup/index.pug
+include ../components/footer/index.pug
 
 doctype html
 html(lang="ru")
@@ -9,20 +14,13 @@ html(lang="ru")
     body.page-home
             +header()
             main(id='contentContainer')
-                form(id="searchMovie").search-form
-                    input(type='text' placeholder='Search movie' autocomplete="off").search-input
-                    button(type='submit').search-button Search
-                    button(type='reset').delete-button X
-                    .results No results
-                .section-with-slider.swiper-container#movieSlider
-                    .swiper-button-prev
-                    .swiper-button-next
-                    .swiper-wrapper
-                    .swiper-pagination
-
-            footer
-                .footer-container
-                    a(href="https://rs.school/") RS School 2020q1
-                    a(href="#") MariannaV
+                section
+                    +search-form()
+                    .results
+                .section-with-slider
+                    +loader()
+                    +slider({id : 'movieSlider'})
+                +popup({class: 'errors-block', text: 'error'})
+            +footer()
 
     script(type='module' src='/js/pages/common.js' defer)

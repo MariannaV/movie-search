@@ -1,0 +1,21 @@
+.loader-wrapper.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 2;
+  background-color: #060606c4;
+
+  &.loading .loader-svg {
+    display: inline-block;
+  }
+}
+
+svg.loader-svg {
+  display: none;
+  width: 100px;
+  height: 100px;
+  margin: 20px;
+}

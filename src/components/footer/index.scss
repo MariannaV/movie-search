@@ -1,12 +1,20 @@
 footer {
-  min-height: 60px;
+  font-size: $fontSize;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 15px 0;
   margin-top: auto;
   background: $colorBlueTransparent6;
   background: $linearGradientBlue;
   color: $colorWhite;
+  @media (min-width: $tablet-small) {
+    font-size: $fontSizeSmall;
+  }
+  @media (min-width: $desktop-big) {
+    font-size: $fontSizeBig;
+    padding: 1vw 0;
+  }
 }
 
 .footer-container {
@@ -16,5 +24,20 @@ footer {
   @media (max-width: 374px) {
     flex-direction: column;
     text-align: center;
+  }
+
+  .github {
+    padding-left: 30px;
+    background-image: url('../../src/img/icons/github-icon.svg');
+    background-size: 24px;
+    background-position: left center;
+    background-repeat: no-repeat;
+    @media (max-width: 374px) {
+      background-position: left 16vw center;
+    }
+    @media (min-width: $desktop-big) {
+      padding-left: 2vw;
+      background-size: 1.7vw;
+    }
   }
 }

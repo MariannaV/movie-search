@@ -2,123 +2,179 @@
   --swiper-theme-color: $colorWhite !important;
 }
 
-.card-item {
-  font-weight: 700;
-  display: flex;
-  flex-direction: column;
-  border-radius: 3px;
-  border: 1px solid $colorWhiteTransparent3;
-  padding: 20px;
-  background-color: $colorGrayLightTransparent4;
-  @media (max-width: $tablet-small) {
+.section-with-slider {
+  flex-grow: 1;
+  width: 100%;
+  position: relative;
+  margin: 0 auto;
+}
+  .card-item {
+    font-size: $fontSize;
+    font-weight: 700;
     display: flex;
-    align-items: center;
-  }
-  &.swiper-slide {
-    height: 480px;
-  }
-  .card-title {
-    height: 60px;
-    text-align: center;
-    p {
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-      overflow: hidden;
+    flex-direction: column;
+    border-radius: 3px;
+    border: 1px solid $colorWhiteTransparent3;
+    padding: 20px;
+    background-color: $colorGrayLightTransparent4;
+    @media (min-width: 550px) {
+      font-size: $fontSizeSmall;
     }
-  }
-  .card-title,
-  .card-img,
-  .year {
-    margin-bottom: 15px;
-  }
-  .card-title,
-  .card-bottom {
-    color: #aec4d8;
-  }
-  .card-bottom {
-    display: flex;
-    justify-content: space-between;
-    margin-top: auto;
+    @media (min-width: $desktop-big) {
+      font-size: $fontSizeBig;
+      padding: 1.5vw;
+    }
     @media (max-width: $tablet-small) {
-      align-self: normal;
-    }
-  }
-  .card-img {
-    margin-top: auto;
-    text-align: center;
-    max-width: 100%;
-    max-height: 100%;
-    @media (max-width: 349px) {
-      max-width: 200px;
-    }
-    @media (min-width: 350px) and (max-width: $tablet-small) {
-      max-width: 250px;
-    }
-    img {
-      width: 100%;
-    }
-  }
-  .raiting {
-    width: 65px;
-    background-image: url('../../img/icons/star-icon.svg');
-    background-size: 20px;
-    background-repeat: no-repeat;
-    background-position-x: 40px;
-    background-position-y: 2px;
-  }
-}
-
-.swiper-navigation-buttons {
-  .swiper-button-prev,
-  .swiper-button-next {
-    outline: none;
-    transition: opacity 0.3s;
-    @media (max-width: 549px) {
-      width: 32px;
-      height: 32px;
-      top: -35px;
-      border-radius: 50%;
-      background-color: rgba(163, 176, 187, 0.75);
-      box-shadow: 0 0 5px rgba(219, 219, 219, 0.82);
+      display: flex;
+      align-items: center;
     }
 
-    &::after {
-      @media (max-width: 549px) {
-        font-size: 16px;
+
+    &.swiper-slide {
+      height: initial;
+    }
+
+    .card-title {
+      $lineClamp: 2;
+      $lineHeight: 1.5;
+      --fontSize: $fontSize;
+
+      height: calc($lineClamp * var(--fontSize) * $lineHeight);
+      text-align: center;
+      @media (min-width: 550px) {
+        --fontSize: $fontSizeSmall;
+      }
+      @media (min-width: 1440px) {
+        --fontSize: $fontSizeBig;
+      }
+
+      a {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: $lineClamp;
+        overflow: hidden;
+        word-break: break-word;
+        line-height: $lineHeight;
       }
     }
-    &.swiper-button-disabled {
-      @media (max-width: 549px) {
-        opacity: 0.5;
+
+    .card-title,
+    .card-bottom {
+      color: $colorBlue;
+    }
+
+    .card-bottom {
+      display: flex;
+      justify-content: space-between;
+      margin-top: auto;
+      @media (max-width: $tablet-small) {
+        align-self: normal;
+      }
+    }
+
+    .card-img {
+      margin-top: auto;
+      text-align: center;
+      max-width: 100%;
+      max-height: 100%;
+      @media (max-width: 349px) {
+        max-width: 200px;
+      }
+      @media (min-width: 350px) and (max-width: $tablet-small) {
+        max-width: 250px;
+      }
+
+      img {
+        width: 100%;
+      }
+    }
+
+    .raiting {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      &::after {
+        content: '';
+        display: block;
+        width: 20px;
+        height: 20px;
+        margin-left: 5px;
+        background-image: url('../../img/icons/star-icon.svg');
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        @media (min-width: $desktop-big) {
+          width: 1.4vw;
+          height: 1.4vw;
+          margin-left: 0.35vw;
+        }
       }
     }
   }
-  .swiper-button-prev {
-    @media (min-width: $tablet-small) and (max-width: 767px) {
-      left: -35px;
-    }
-    @media (min-width: 768px) {
-      left: -50px;
-    }
-  }
-  .swiper-button-next {
-    @media (min-width: $tablet-small) and (max-width: 767px) {
-      right: -35px;
-    }
-    @media (min-width: 768px) {
-      right: -50px;
-    }
-  }
-}
+    .swiper-navigation-buttons {
+      .swiper-button-prev,
+      .swiper-button-next {
+        outline: none;
+        transition: opacity 0.3s;
+        @media (max-width: 549px) {
+          width: 32px;
+          height: 32px;
+          top: -35px;
+          border-radius: 50%;
+          background-color: $colorGrayLightTransparent75;
+          box-shadow: 0 0 5px rgba(219, 219, 219, 0.82);
+        }
 
-.pagination-block {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 80px;
-  .swiper-pagination-bullet {
-    background-color: $colorWhite;
-    opacity: 0.7;
-  }
-}
+        &::after {
+          @media (max-width: 549px) {
+            font-size: 16px;
+          }
+          @media (min-width: $desktop-big) {
+            font-size: 2vw;
+          }
+
+        }
+
+        &.swiper-button-disabled {
+          @media (max-width: 549px) {
+            opacity: 0.5;
+          }
+        }
+      }
+
+      .swiper-button-prev {
+        @media (min-width: $tablet-small) and (max-width: 767px) {
+          left: -35px;
+        }
+        @media (min-width: 768px) {
+          left: -50px;
+        }
+        @media (min-width: $desktop-big) {
+          left: -3vw;
+        }
+      }
+
+      .swiper-button-next {
+        @media (min-width: $tablet-small) and (max-width: 767px) {
+          right: -35px;
+        }
+        @media (min-width: 768px) {
+          right: -50px;
+        }
+        @media (min-width: $desktop-big) {
+          right: -3vw;
+        }
+      }
+    }
+
+    .swiper-pagination {
+      width: 100% !important;
+
+      .swiper-pagination-bullet {
+        background-color: $colorWhite;
+        opacity: 0.7;
+      }
+    }
+
+
