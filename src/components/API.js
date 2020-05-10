@@ -57,11 +57,11 @@ export const API_OMDB = {
     try {
       const response = await fetch(`https://www.omdbapi.com/?i=${movieId}&apikey=${this.apikey}`);
       if (!response.ok) {
-        throw Error('NO OK');
+        throw Error('Something went wrong');
       }
       const result = await response.json();
       if ('Error' in result) {
-        throw Error(result.Error);
+        throw Error(`Error ${result.Error}`);
       }
       this.movies.set(movieId, { ...this.movies.get(movieId), imdbRaiting: result.imdbRating });
     } catch (error) {
@@ -81,10 +81,9 @@ export const API_TRANSLATE = {
       const response = await fetch(
         `https://translate.yandex.net/api/v1.5/tr.json/translate?key=${this.apikey}&text=${word}&lang=${lang}`
       );
-      if (!response.ok) throw Error('NO OK');
+      if (!response.ok) throw Error('Something went wrong');
       const result = await response.json();
       // because we always get array with one value as answer for our text
-
       return result.text[0];
     } catch (error) {
       showErrorMessage(error);

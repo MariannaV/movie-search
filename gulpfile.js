@@ -8,12 +8,7 @@ gulp.task('pug-to-html', () =>
     .src('src/html/*.pug' /*, { since: gulp.lastRun("pug-to-html") }*/)
     .pipe(plumber({ errorHandler: notify.onError('Pug: <%= error.message %>') }))
     .pipe(newer('public'))
-    .pipe(
-      require('gulp-pug')({
-        pretty: '\t',
-        locals: { createRoute: require('./src/components/header/header.js').createRoute },
-      })
-    )
+    .pipe(require('gulp-pug')({ pretty: '\t' }))
     .pipe(gulp.dest('public'))
 );
 
@@ -94,31 +89,30 @@ gulp.task('js', () =>
 );
 
 const libraries = {
-    names: Object.keys(require(`./package.json`).dependencies),
-    get sources() {
-        return this.names.map(libraryName => `./node_modules/${libraryName}/**`)
-    },
-    get dist() {
-        return this.names.map(libraryName => `public/libs/${libraryName}`)
-    },
+  names: Object.keys(require(`./package.json`).dependencies),
+  get sources() {
+    return this.names.map((libraryName) => `./node_modules/${libraryName}/**`);
+  },
+  get dist() {
+    return this.names.map((libraryName) => `public/libs/${libraryName}`);
+  },
 };
 
 gulp.task('import-libraries', () =>
-    gulp
-        .src(libraries.sources)
-        .pipe(
-            plumber({
-                errorHandler: notify.onError('Import libraries: <%= error.message %>'),
-            })
-        )
-        // .pipe(newer("public/libs"))
-        .pipe(
-            gulp.dest(file => {
-                const libraryName = file.base.split(/node_modules/)[1];
-                console.log(libraryName, file.base)
-                return `public/libs/${libraryName}`
-            })
-        )
+  gulp
+    .src(libraries.sources)
+    .pipe(
+      plumber({
+        errorHandler: notify.onError('Import libraries: <%= error.message %>'),
+      })
+    )
+    // .pipe(newer("public/libs"))
+    .pipe(
+      gulp.dest((file) => {
+        const libraryName = file.base.split(/node_modules/)[1];
+        return `public/libs/${libraryName}`;
+      })
+    )
 );
 
 gulp.task('js-optim', () =>
@@ -150,7 +144,14 @@ gulp.task('reload', (done) => {
   done();
 });
 
-const compileAll = gulp.parallel('import-libraries', gulp.series('fonts', 'img', 'css'), 'assets', 'js', 'pug-to-html', 'html');
+const compileAll = gulp.parallel(
+  'import-libraries',
+  gulp.series('fonts', 'img', 'css'),
+  'assets',
+  'js',
+  'pug-to-html',
+  'html'
+);
 const cleanBuildFolder = async () => await require('del')(['./public']);
 
 gulp.task(
@@ -160,14 +161,15 @@ gulp.task(
       server: {
         baseDir: './public/',
       },
-    }),
-      gulp.watch('src/css/fonts/**/*.*', gulp.series('fonts', 'reload')),
-      gulp.watch('src/assets/**/*.*', gulp.series('assets', 'reload')),
-      gulp.watch('src/img/**/*.*', gulp.series('img', 'reload')),
-      gulp.watch('src/**/*.scss', gulp.series('css', 'reload')),
-      gulp.watch('src/**/*.js', gulp.series('js', 'reload')),
-      gulp.watch('src/**/*.pug', gulp.series('pug-to-html', 'reload')),
-      gulp.watch('src/**/*.html', gulp.series('html', 'reload'));
+    });
+
+    gulp.watch('src/css/fonts/**/*.*', gulp.series('fonts', 'reload'));
+    gulp.watch('src/assets/**/*.*', gulp.series('assets', 'reload'));
+    gulp.watch('src/img/**/*.*', gulp.series('img', 'reload'));
+    gulp.watch('src/**/*.scss', gulp.series('css', 'reload'));
+    gulp.watch('src/**/*.js', gulp.series('js', 'reload'));
+    gulp.watch('src/**/*.pug', gulp.series('pug-to-html', 'reload'));
+    gulp.watch('src/**/*.html', gulp.series('html', 'reload'));
   })
 );
 
