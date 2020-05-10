@@ -19,7 +19,7 @@ export const API_OMDB = {
         },
         params,
       });
-      const response = await fetch(`http://www.omdbapi.com/?${searhParams}`);
+      const response = await fetch(`https://www.omdbapi.com/?${searhParams}`);
       if (!response.ok) {
         throw Error('Something went wrong');
       }
