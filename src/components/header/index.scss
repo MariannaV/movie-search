@@ -1,0 +1,13 @@
+.header {
+  display: flex;
+  justify-content: center;
+  padding: 15px 0;
+  color: $colorWhite;
+  background: $colorBlueTransparent6;
+  background: $linearGradientBlue;
+  border-radius: 3px;
+  text-align: center;
+  @media (--min-desktop-big) {
+    padding: 1vw 0;
+  }
+}

@@ -1,0 +1,32 @@
+/*----------COLORS----------*/
+$colorWhite: rgb(255, 255, 255);
+$colorGrayLight: rgba(163, 176, 187);
+$colorGrayTransparent: rgba(6, 6, 6, 0.76);
+$colorBlue: rgb(174, 196, 216);
+$colorBlueTransparent6: rgba(0, 157, 190, 0.6);
+$colorBlueDark: rgb(44, 62, 80);
+
+/*----------SCREEN SIZES----------*/
+$mobile: 350px;
+$mobile-big: 550px;
+$tablet: 768px;
+$tablet-medium: 900px;
+$desktop-small: 1250px;
+$desktop-big: 1440px;
+
+@custom-media --max-mobile (width < $mobile);
+@custom-media --min-mobile (width >= $mobile);
+@custom-media --max-mobile-big (width < $mobile-big);
+@custom-media --min-mobile-big (width >= $mobile-big);
+@custom-media --max-tablet (width < $tablet);
+@custom-media --min-tablet (width >= $tablet);
+@custom-media --max-desktop-big (width < $desktop-big);
+@custom-media --min-desktop-big (width >= $desktop-big);
+
+/*----------THEMES----------*/
+$linearGradientBlue: linear-gradient(
+  90deg,
+  rgba(0, 157, 190, 0.4) 15%,
+  rgba(0, 187, 207, 0.65) 46%,
+  rgba(0, 152, 234, 0.65) 71%
+);
