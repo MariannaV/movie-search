@@ -7,13 +7,21 @@ export const API_OMDB = {
   pageSize: 10,
   searchResults: new Map([]),
   movies: new Map([]),
-  //TODO: get search url params api mdn
   async moviesGetBySearch(params = {}) {
-    const { text, year, page } = params;
+    const { text } = params;
     try {
-      const response = await fetch(`http://www.omdbapi.com/?apikey=${this.apikey}&s=${text}&page=${page}&y=${year}`);
+      const searhParams = getSearchParams({
+        initValue: `apikey=${this.apikey}`,
+        apiParamsMap: {
+          text: 's',
+          page: 'page',
+          year: 'y',
+        },
+        params,
+      });
+      const response = await fetch(`http://www.omdbapi.com/?${searhParams}`);
       if (!response.ok) {
-        throw Error('NO OK');
+        throw Error('Something went wrong');
       }
       const result = await response.json();
       const movieIds = new Set();
@@ -24,17 +32,21 @@ export const API_OMDB = {
       });
       await Promise.all(
         [...movieIds]
-          .map((movieId) => [
-            this.moviesRaitingGetById({ movieId }),
-            fetch(this.movies.get(movieId).Poster).then((image) =>
-              imageToBase64({
-                image,
-                onload: (PosterBase64) => {
-                  this.movies.set(movieId, { ...this.movies.get(movieId), PosterBase64 });
-                },
-              })
-            ),
-          ])
+          .map((movieId) => {
+            const currentMovie = this.movies.get(movieId);
+            return [
+              this.moviesRaitingGetById({ movieId }),
+              currentMovie.Poster !== 'N/A' &&
+                fetch(currentMovie.Poster).then((image) =>
+                  imageToBase64({
+                    image,
+                    onload: (PosterBase64) => {
+                      this.movies.set(movieId, { ...currentMovie, PosterBase64 });
+                    },
+                  })
+                ),
+            ].filter(Boolean);
+          })
           .flat()
       );
 
@@ -55,7 +67,14 @@ export const API_OMDB = {
   async moviesRaitingGetById(params = {}) {
     const { movieId } = params;
     try {
-      const response = await fetch(`https://www.omdbapi.com/?i=${movieId}&apikey=${this.apikey}`);
+      const searhParams = getSearchParams({
+        initValue: `apikey=${this.apikey}`,
+        apiParamsMap: {
+          movieId: 'i',
+        },
+        params,
+      });
+      const response = await fetch(`https://www.omdbapi.com/?${searhParams}`);
       if (!response.ok) {
         throw Error('Something went wrong');
       }
@@ -102,4 +121,14 @@ async function imageToBase64({ image, onload }) {
     };
     reader.readAsDataURL(blob);
   });
+}
+
+function getSearchParams({ initValue, apiParamsMap, params }) {
+  return Object.keys(params).reduce((acc, paramKey) => {
+    const paramValue = params[paramKey];
+    if (paramValue) {
+      acc.append(apiParamsMap?.[paramKey] ?? paramKey, paramValue);
+    }
+    return acc;
+  }, new URLSearchParams(initValue));
 }
