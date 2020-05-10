@@ -16,7 +16,6 @@ module.exports = {
     // require("postcss-atroot")(),
     require('postcss-property-lookup')(),
     require('postcss-nested')({ preserveEmpty: true }),
-    require('postcss-custom-media')(),
     require('postcss-color-function')(),
     require('postcss-selector-not')(),
     require('postcss-selector-matches')(),
