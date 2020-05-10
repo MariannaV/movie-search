@@ -1,6 +1,6 @@
 .popup-container {
   display: none;
-  background-color: $colorBlueDarkTransparent85;
+  background-color: color($colorBlueDark a(85%));
   position: fixed;
   left: 0;
   top: 0;
@@ -13,16 +13,8 @@
   }
 
   .popup-text {
-    padding: 0 20px;
-    font-size: $fontSize;
     display: block;
-    @media (min-width: $tablet-small) {
-      font-size: $fontSizeSmall;
-    }
-
-    @media (min-width: $desktop-big) {
-      font-size: $fontSizeBig;
-    }
+    padding: 0 20px;
   }
 
   .close-popup {
@@ -33,9 +25,9 @@
     background-repeat: no-repeat;
     background-position: center;
     padding: 25px;
-    background-image: url('../../img/icons/reset-button-icon.svg');
+    background-image: url('/assets/img/icons/reset-button-icon.svg');
     cursor: pointer;
-    @media (min-width: $desktop-big) {
+    @media (--min-desktop-big) {
       padding: 1.7vw;
       background-size: 1.7vw;
     }
@@ -56,7 +48,7 @@
   color: $colorBlueDark;
   background-color: $colorWhite;
   transform: translate(-50%, -50%);
-  @media (min-width: $desktop-big) {
+  @media (--min-desktop-big) {
     max-width: 42vw;
     max-height: 28vw;
     padding: 1.6vw;

@@ -6,9 +6,9 @@
   height: 100%;
   position: absolute;
   z-index: 2;
-  background-color: #060606c4;
+  background-color: $colorGrayTransparent;
 
-  &.loading .loader-svg {
+  .loader-svg {
     display: inline-block;
   }
 }

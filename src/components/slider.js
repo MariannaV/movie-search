@@ -9,7 +9,7 @@ function sliderCreate({ sliderName }) {
   return {
     init() {
       this[sliderId] = new Swiper(`#${sliderName}`, {
-        height: 600,
+        // height: 600,
         speed: 400,
         updateOnWindowResize: true,
         breakpoints: {
@@ -50,7 +50,9 @@ function sliderCreate({ sliderName }) {
       return this[sliderId];
     },
     async slidesCreate() {
-      if (!history.state) history.replaceState({ searchMovie: 'House', page: 1 }, 'movies');
+      const { isNotFound, searchMovie: notFoundedMovie } = history.state ?? {};
+      if (!history.state || history.state.isNotFound) history.replaceState({ searchMovie: 'House', page: 1 }, 'movies');
+
       const { page } = history.state;
       const searchMovie = await API_TRANSLATE.translateTo({ word: history.state.searchMovie, lang: 'en' });
       const getSearchResultsByCurrentSearchMovie = () => API_OMDB.searchResults.get(searchMovie);
@@ -62,27 +64,32 @@ function sliderCreate({ sliderName }) {
           text: searchMovie,
           page,
         });
-        const isNotFound = !getSearchResultsByCurrentSearchMovie();
-        const isTranslated = history.state.searchMovie !== searchMovie;
-
-        addSearchResults(
-          (() => {
-            if (isNotFound) return `No results for "${history.state.searchMovie}"`;
-            if (isTranslated) return `Showing results for "${searchMovie}"`;
-            return null;
-          })()
-        );
-
-        if (isNotFound) {
-          history.replaceState(null, 'movies');
+        if (!getSearchResultsByCurrentSearchMovie()) {
+          history.replaceState(
+            {
+              ...history.state,
+              isNotFound: true,
+            },
+            'movies'
+          );
           this.slidesCreate();
           return;
         }
       }
-      const searchMovieIds = [...getSearchResultsByCurrentSearchMovie()];
 
+      const isTranslated = history.state.searchMovie !== searchMovie;
+      addSearchResults(
+        (() => {
+          if (isNotFound) return `No results for "${notFoundedMovie}"`;
+          if (isTranslated) return `Showing results for "${searchMovie}"`;
+          return null;
+        })()
+      );
+
+      const searchMovieIds = [...getSearchResultsByCurrentSearchMovie()];
       const searchMovies = searchMovieIds.map((movieId) => API_OMDB.movies.get(movieId));
       document.querySelector('.loader-wrapper').classList.remove('loading');
+
       this.slider.appendSlide(
         searchMovies.slice((history.state.page - 1) * API_OMDB.pageSize).map((movieData) => this.slideCreate(movieData))
       );
@@ -100,7 +107,9 @@ function sliderCreate({ sliderName }) {
                </div>
                <div class='card-img'>
                     <img src=${
-                      moviesData.Poster !== 'N/A' ? moviesData.PosterBase64 : '/assets/no-available-photo.svg'
+                      moviesData.Poster !== 'N/A'
+                        ? moviesData.PosterBase64
+                        : '/assets/img/content/no-available-photo.svg'
                     }>
                 </div>
                <div class='card-bottom'>

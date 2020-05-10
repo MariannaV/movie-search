@@ -1,11 +1,12 @@
 @import 'helpers/postcss-reset/mobile.css';
+@import '../components/variables.scss';
+
 @import '../components/header/index.scss';
 @import '../components/form/search-form.scss';
 @import '../components/loader/index.scss';
 @import '../components/slider/index.scss';
 @import '../components/popup/index.scss';
 @import '../components/footer/index.scss';
-@import '../components/variables.scss';
 
 /*----------BASIC----------*/
 
@@ -18,40 +19,49 @@ a:visited {
 button {
   outline: none;
 }
-
 body {
+  font-size: var(--fontSize);
+  @media (--max-desktop-big) {
+    --fontSize: 1em;
+  }
+  @media (--min-desktop-big) {
+    --fontSize: 1.3vw;
+  }
+}
+.page-home {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  font-size: 20px;
   font-weight: 400;
   line-height: 28px;
   background-size: 100%;
-  background-image: url('../../img/content/background-image.jpg');
+  background-image: url('/assets/img/content/background-image.jpg');
   backdrop-filter: opacity(15%);
 }
 
-main {
+#contentContainer {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  width: 80%;
   margin: 0 auto;
   padding: 40px 0;
 
-  @media (min-width: $desktop-big) {
+  @media (--min-desktop-big) {
     padding: 2vw 0;
   }
+}
+
+.wrapper-container {
+  width: 80%;
 }
 /*----------RESULTS BLOCK----------*/
 
 .results {
-  font-size: $fontSize;
   word-break: break-word;
   color: $colorWhite;
   text-align: center;
 
-  @media (max-width: 549px) {
+  @media (--max-mobile-big) {
     width: 100%;
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -59,13 +69,11 @@ main {
     overflow: hidden;
     margin: 35px 0 70px 0;
   }
-  @media (min-width: $tablet-small) {
+  @media (--min-mobile-big) {
     margin: 35px 0;
-    font-size: $fontSizeSmall;
   }
 
-  @media (min-width: $desktop-big) {
-    font-size: $fontSizeBig;
+  @media (--min-desktop-big) {
     margin: 2.43vw 0;
   }
 }

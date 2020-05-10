@@ -1,7 +1,11 @@
+include ../loader/index.pug
+
 mixin slider(data)
-    .swiper-navigation-buttons
-        .swiper-button-prev
-        .swiper-button-next
-    .swiper-container(id=data.id)
-        .swiper-wrapper
-    .swiper-pagination
+    .slider
+        +loader()
+        .swiper-navigation-buttons
+            .swiper-button-prev
+            .swiper-button-next
+        .swiper-container(id=data.id)
+            .swiper-wrapper
+        .swiper-pagination

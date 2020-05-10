@@ -39,6 +39,13 @@ export function showErrorMessage(message) {
   const errorMessageContainer = document.querySelector('.errors-block');
   const errorBlock = errorMessageContainer.querySelector('.popup-text');
   const closePopup = errorMessageContainer.querySelector('.close-popup');
+
+  document.body.addEventListener('keydown', onKeyDownClose);
+  closePopup.addEventListener('click', onClosePopup);
+  errorMessageContainer.classList.add('active');
+  errorBlock.innerHTML = '';
+  errorBlock.insertAdjacentHTML('afterbegin', message);
+
   function onKeyDownClose(event) {
     if (event.keyCode === 27) {
       errorMessageContainer.classList.remove('active');
@@ -46,14 +53,10 @@ export function showErrorMessage(message) {
       document.body.removeEventListener('keydown', onKeyDownClose);
     }
   }
+
   function onClosePopup() {
     errorMessageContainer.classList.remove('active');
     closePopup.removeEventListener('click', onClosePopup);
     document.body.removeEventListener('keydown', onKeyDownClose);
   }
-  document.body.addEventListener('keydown', onKeyDownClose);
-  closePopup.addEventListener('click', onClosePopup);
-  errorMessageContainer.classList.add('active');
-  errorBlock.innerHTML = '';
-  errorBlock.insertAdjacentHTML('afterbegin', message);
 }

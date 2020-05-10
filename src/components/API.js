@@ -26,27 +26,28 @@ export const API_OMDB = {
       const result = await response.json();
       const movieIds = new Set();
       if (result.Response === 'False') return;
+
       result.Search.forEach((movie) => {
         this.movies.set(movie.imdbID, movie);
         movieIds.add(movie.imdbID);
       });
+
       await Promise.all(
         [...movieIds]
-          .map((movieId) => {
-            const currentMovie = this.movies.get(movieId);
-            return [
+          .map((movieId) =>
+            [
               this.moviesRaitingGetById({ movieId }),
-              currentMovie.Poster !== 'N/A' &&
-                fetch(currentMovie.Poster).then((image) =>
+              this.movies.get(movieId).Poster !== 'N/A' &&
+                fetch(this.movies.get(movieId).Poster).then((image) =>
                   imageToBase64({
                     image,
                     onload: (PosterBase64) => {
-                      this.movies.set(movieId, { ...currentMovie, PosterBase64 });
+                      this.movies.set(movieId, { ...this.movies.get(movieId), PosterBase64 });
                     },
                   })
                 ),
-            ].filter(Boolean);
-          })
+            ].filter(Boolean)
+          )
           .flat()
       );
 

@@ -1,7 +1,6 @@
 include ../components/head/head
 include ../components/header/header.pug
 include ../components/form/search-form.pug
-include ../components/loader/index.pug
 include ../components/slider/index.pug
 include ../components/popup/index.pug
 include ../components/footer/index.pug
@@ -9,16 +8,15 @@ include ../components/footer/index.pug
 doctype html
 html(lang="ru")
     +head({ "title": "Movie Search", "description": "Поиск кино" })
-        link(rel="stylesheet" href="styles/index.css")
         link(rel="stylesheet" href="/libs/swiper/css/swiper.min.css")
+        link(rel="stylesheet" href="styles/index.css")
     body.page-home
             +header()
-            main(id='contentContainer')
+            main(id='contentContainer').wrapper-container
                 section
                     +search-form()
                     .results
                 .section-with-slider
-                    +loader()
                     +slider({id : 'movieSlider'})
                 +popup({class: 'errors-block', text: 'error'})
             +footer()
