@@ -9,7 +9,6 @@ function sliderCreate({ sliderName }) {
   return {
     init() {
       this[sliderId] = new Swiper(`#${sliderName}`, {
-        // height: 600,
         speed: 400,
         updateOnWindowResize: true,
         breakpoints: {
